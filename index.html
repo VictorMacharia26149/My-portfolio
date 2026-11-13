@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Victor Munene Macharia | Portfolio</title>
+  <style>
+    /* =========================================
+       1. BASE VARIABLES & HIGH-CONTRAST THEMES
+       ========================================= */
+    :root {
+      --bg-primary: #0b0f19;
+      --bg-secondary: #131a2a;
+      --glass-bg: rgba(23, 32, 51, 0.82);
+      --glass-border: rgba(255, 255, 255, 0.16);
+      --glass-hover: rgba(30, 41, 66, 0.95);
+      --text-main: #ffffff;
+      --text-muted: #cbd5e1;
+
+      /* Default Bright Accent */
+      --accent: #38bdf8;
+      --accent-secondary: #818cf8;
+      --accent-glow: rgba(56, 189, 248, 0.35);
+      --btn-text: #090d16;
+    }
+
+    /* Light Mode Overrides (High Contrast) */
+    body.light-mode {
+      --bg-primary: #eef2f6;
+      --bg-secondary: #ffffff;
+      --glass-bg: rgba(255, 255, 255, 0.94);
+      --glass-border: rgba(15, 23, 42, 0.15);
+      --glass-hover: #ffffff;
+      --text-main: #090d16;
+      --text-muted: #334155;
+      --btn-text: #ffffff;
+    }
+
+    /* =========================================
+       2. UNIQUE SECTION PERSONALITIES (DARK MODE)
+       ========================================= */
+    body.theme-home {
+      --accent: #38bdf8;
+      --accent-secondary: #818cf8;
+      --accent-glow: rgba(56, 189, 248, 0.32);
+      background-image: radial-gradient(rgba(148, 163, 184, 0.22) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    body.theme-bio {
+      --accent: #34d399;
+      --accent-secondary: #22d3ee;
+      --accent-glow: rgba(52, 211, 153, 0.32);
+    }
+
+    body.theme-projects {
+      --accent: #c084fc;
+      --accent-secondary: #f472b6;
+      --accent-glow: rgba(192, 132, 252, 0.32);
+      background-image: linear-gradient(to right, rgba(192, 132, 252, 0.08) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(192, 132, 252, 0.08) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    body.theme-experience {
+      --accent: #fbbf24;
+      --accent-secondary: #fb7185;
+      --accent-glow: rgba(251, 191, 36, 0.32);
+    }
+
+    body.theme-contact {
+      --accent: #fb7185;
+      --accent-secondary: #fb923c;
+      --accent-glow: rgba(251, 113, 133, 0.32);
+    }
+
+    /* =========================================
+       3. LIGHT MODE ACCENTS (DEEPER FOR READABILITY)
+       ========================================= */
+    body.light-mode.theme-home {
+      --accent: #0284c7;
+      --accent-secondary: #4f46e5;
+      --accent-glow: rgba(2, 132, 199, 0.22);
+    }
+
+    body.light-mode.theme-bio {
+      --accent: #059669;
+      --accent-secondary: #0891b2;
+      --accent-glow: rgba(5, 150, 105, 0.22);
+    }
+
+    body.light-mode.theme-projects {
+      --accent: #7e22ce;
+      --accent-secondary: #db2777;
+      --accent-glow: rgba(126, 34, 206, 0.22);
+    }
+
+    body.light-mode.theme-experience {
+      --accent: #b45309;
+      --accent-secondary: #dc2626;
+      --accent-glow: rgba(180, 83, 9, 0.22);
+    }
+
+    body.light-mode.theme-contact {
+      --accent: #e11d48;
+      --accent-secondary: #ea580c;
+      --accent-glow: rgba(225, 29, 72, 0.22);
+    }
+
+    /* =========================================
+       4. GLOBAL RESET & AMBIENT EFFECTS
+       ========================================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 85px;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      transition: background-color 0.35s ease, color 0.35s ease;
+      position: relative;
+    }
+
+    /* Ambient Floating Orbs */
+    .ambient-light {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      z-index: -2;
+      pointer-events: none;
+      opacity: 0.45;
+      transition: background 0.5s ease;
+    }
+
+    body.light-mode .ambient-light {
+      opacity: 0.25;
+    }
+
+    .light-1 {
+      width: 420px;
+      height: 420px;
+      top: -100px;
+      left: -100px;
+      background: var(--accent);
+    }
+
+    .light-2 {
+      width: 380px;
+      height: 380px;
+      bottom: -80px;
+      right: -80px;
+      background: var(--accent-secondary);
+    }
+
+    /* Mouse Cursor Glow */
+    #cursor-glow {
+      position: fixed;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: -1;
+      transition: opacity 0.3s ease;
+    }
+
+    /* =========================================
+       5. HEADER & NAVIGATION
+       ========================================= */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 6%;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: var(--glass-bg);
+      border-bottom: 1px solid var(--glass-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--accent);
+      transition: color 0.3s ease;
+    }
+
+    .nav-group {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.4rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.35rem 0;
+      position: relative;
+      transition: color 0.25s ease;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--accent);
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.25s ease;
+    }
+
+    nav a:hover::after,
+    nav a.active::after {
+      width: 100%;
+    }
+
+    #themeToggle {
+      background: var(--bg-secondary);
+      color: var(--text-main);
+      border: 1.5px solid var(--accent);
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    #themeToggle:hover {
+      background: var(--accent);
+      color: var(--btn-text);
+      box-shadow: 0 0 14px var(--accent-glow);
+    }
+
+    .header-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      background: var(--bg-secondary);
+    }
+
+    /* =========================================
+       6. MAIN LAYOUT & TYPOGRAPHY
+       ========================================= */
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 6%;
+    }
+
+    .portfolio-section {
+      padding: 4.5rem 0;
+      border-bottom: 1px solid var(--glass-border);
+      animation: pageFadeIn 0.55s ease forwards;
+    }
+
+    .portfolio-section:last-of-type {
+      border-bottom: none;
+    }
+
+    @keyframes pageFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .page-title {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .page-subtitle {
+      font-size: 1.08rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      line-height: 1.65;
+    }
+
+    /* =========================================
+       7. HERO SECTION (HOME)
+       ========================================= */
+    .hero {
+      min-height: 78vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      background: var(--glass-bg);
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.3rem, 5vw, 3.8rem);
+      line-height: 1.15;
+      font-weight: 800;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* =========================================
+       8. BUTTONS
+       ========================================= */
+    .btn {
+      display: inline-block;
+      padding: 0.78rem 1.55rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      background: var(--accent);
+      color: var(--btn-text);
+      border: 2px solid var(--accent);
+      cursor: pointer;
+      margin-right: 0.75rem;
+      margin-top: 0.5rem;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px var(--accent-glow);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      border: 2px solid var(--accent);
+    }
+
+    .btn-outline:hover {
+      background: var(--accent);
+      color: var(--btn-text);
+    }
+
+    /* =========================================
+       9. CARDS, GRIDS & TAGS
+       ========================================= */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .glass-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      padding: 2rem;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    body.light-mode .glass-card {
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+    }
+
+    .glass-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      box-shadow: 0 14px 32px -8px var(--accent-glow);
+    }
+
+    #projects .glass-card {
+      border-top: 3px solid var(--accent);
+    }
+
+    #bio .glass-card {
+      border-left: 3px solid var(--accent);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.38rem 0.9rem;
+      margin: 0.25rem 0.3rem 0.25rem 0;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+    }
+
+    body.light-mode .tag {
+      background: rgba(15, 23, 42, 0.04);
+    }
+
+    /* =========================================
+       10. TIMELINE (EXPERIENCE SECTION)
+       ========================================= */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+      border-left: 2.5px solid var(--accent);
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .timeline-item {
+      position: relative;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.55rem;
+      top: 2rem;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    /* =========================================
+       11. CONTACT FORM & FOOTER
+       ========================================= */
+    #contactForm {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    #contactForm input,
+    #contactForm textarea {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      border: 1.5px solid var(--glass-border);
+      background: var(--bg-secondary);
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    #contactForm input:focus,
+    #contactForm textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    #contactForm button {
+      align-self: flex-start;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 6%;
+      background: var(--glass-bg);
+      border-top: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* =========================================
+       12. RESPONSIVE DESIGN
+       ========================================= */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 0.9rem;
+        padding: 1rem 4%;
+      }
+
+      .nav-group {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      nav {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body class="theme-home">
+  <div class="ambient-light light-1"></div>
+  <div class="ambient-light light-2"></div>
+  <div id="cursor-glow"></div>
+
+  <header>
+    <a href="#home" class="logo">VICTOR<span>.MM</span></a>
+
+    <div class="nav-group">
+      <nav>
+        <a href="#home" class="active">Home</a>
+        <a href="#bio">Bio</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button id="themeToggle">Light Mode</button>
+      <!-- Replace 'profile.jpg' with your actual image file name -->
+      <img src="profile.jpg" alt="Victor Munene Macharia" class="header-avatar" onerror="this.style.display='none'">
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. HOME SECTION -->
+    <section id="home" class="portfolio-section hero" data-theme="theme-home">
+      <p class="hero-badge">Welcome to My Portfolio</p>
+      <h1>Hi, I'm <span>Victor Munene Macharia</span>.<br>Building modern digital solutions.</h1>
+      <p class="page-subtitle" style="max-width: 640px;">
+        I design and build clean, responsive web applications with strong attention to performance, usability, and visual detail.
+      </p>
+      <div>
+        <a href="#projects" class="btn">Explore My Projects</a>
+        <a href="#contact" class="btn btn-outline">Get In Touch</a>
+      </div>
+    </section>
+
+    <!-- 2. BIO SECTION -->
+    <section id="bio" class="portfolio-section" data-theme="theme-bio">
+      <h2 class="page-title">About Me</h2>
+      <p class="page-subtitle">Background, core values, and technical skills of Victor Munene Macharia.</p>
+
+      <div class="grid-2">
+        <div class="glass-card">
+          <h3 style="margin-bottom: 1rem; font-size: 1.4rem;">My Story</h3>
+          <p style="color: var(--text-muted); margin-bottom: 1rem;">
+            I am Victor Munene Macharia, a dedicated developer passionate about turning ideas into reliable, user-friendly software products.
+          </p>
+          <p style="color: var(--text-muted);">
+            I focus on writing clean code, solving practical problems, and continuously learning modern web technologies to deliver high-quality results.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <h3 style="margin-bottom: 1rem; font-size: 1.4rem;">Core Skills</h3>
+          <div>
+            <span class="tag">HTML5</span>
+            <span class="tag">CSS3 / Responsive Design</span>
+            <span class="tag">JavaScript (ES6+)</span>
+            <span class="tag">UI/UX Design</span>
+            <span class="tag">Git &amp; GitHub</span>
+            <span class="tag">REST APIs</span>
+            <span class="tag">Problem Solving</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. PROJECTS SECTION -->
+    <section id="projects" class="portfolio-section" data-theme="theme-projects">
+      <h2 class="page-title">Featured Projects</h2>
+      <p class="page-subtitle">Selected works built by Victor Munene Macharia.</p>
+
+      <div class="grid-2">
+        <div class="glass-card">
+          <h3>Project One — E-Commerce Web App</h3>
+          <p style="color: var(--text-muted); margin: 0.8rem 0 1.2rem;">
+            A fast, mobile-first online storefront with product filtering, cart management, and smooth checkout flows.
+          </p>
+          <div style="margin-bottom: 1.5rem;">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+          </div>
+          <a href="#contact" class="btn">Live Preview</a>
+        </div>
+
+        <div class="glass-card">
+          <h3>Project Two — Task &amp; Productivity Hub</h3>
+          <p style="color: var(--text-muted); margin: 0.8rem 0 1.2rem;">
+            An interactive task tracker featuring priority labels, local storage persistence, and progress analytics.
+          </p>
+          <div style="margin-bottom: 1.5rem;">
+            <span class="tag">JavaScript</span>
+            <span class="tag">LocalStorage</span>
+            <span class="tag">UI Design</span>
+          </div>
+          <a href="#contact" class="btn">Live Preview</a>
+        </div>
+
+        <div class="glass-card">
+          <h3>Project Three — Business Analytics Dashboard</h3>
+          <p style="color: var(--text-muted); margin: 0.8rem 0 1.2rem;">
+            A responsive data visualization interface designed to help teams monitor key metrics in real time.
+          </p>
+          <div style="margin-bottom: 1.5rem;">
+            <span class="tag">APIs</span>
+            <span class="tag">CSS Grid</span>
+            <span class="tag">JavaScript</span>
+          </div>
+          <a href="#contact" class="btn">Live Preview</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. EXPERIENCE SECTION -->
+    <section id="experience" class="portfolio-section" data-theme="theme-experience">
+      <h2 class="page-title">Experience &amp; Education</h2>
+      <p class="page-subtitle">Professional milestones and academic background of Victor Munene Macharia.</p>
+
+      <div class="timeline">
+        <div class="timeline-item glass-card">
+          <span class="tag" style="margin-bottom: 0.6rem;">2024 – Present</span>
+          <h3>Web Developer / Freelance</h3>
+          <p style="color: var(--text-muted); margin-top: 0.5rem;">
+            Designing and developing custom websites, portfolio platforms, and interactive web applications for clients.
+          </p>
+        </div>
+
+        <div class="timeline-item glass-card">
+          <span class="tag" style="margin-bottom: 0.6rem;">2025 – present</span>
+          <h3>Junior Frontend Developer</h3>
+          <p style="color: var(--text-muted); margin-top: 0.5rem;">
+            Built responsive user interfaces, improved page load speeds, and collaborated on cross-browser compatibility.
+          </p>
+        </div>
+
+        <div class="timeline-item glass-card">
+          <span class="tag" style="margin-bottom: 0.6rem;">Education</span>
+          <h3>Degree in Information Technology</h3>
+          <p style="color: var(--text-muted); margin-top: 0.5rem;">
+            Currently Focusing on software engineering, web technologies, databases, and system design in Kirinyaga University.
+          
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. CONTACT SECTION -->
+    <section id="contact" class="portfolio-section" data-theme="theme-contact">
+      <h2 class="page-title">Contact Info</h2>
+      <p class="page-subtitle">Reach out to Victor Munene Macharia for collaborations, roles, or inquiries.</p>
+
+      <div class="grid-2">
+        <div class="glass-card">
+          <h3 style="margin-bottom: 1rem;">Direct Details</h3>
+          <p style="color: var(--text-muted); margin-bottom: 0.8rem;">
+            <strong>Name:</strong> Victor Munene Macharia
+          </p>
+          <p style="color: var(--text-muted); margin-bottom: 0.8rem;">
+            <strong>Email:</strong> victormacharia605@gmail.com
+          </p>
+          <p style="color: var(--text-muted); margin-bottom: 0.8rem;">
+            <strong>Phone:</strong> +254 726915501
+          </p>
+          <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+            <strong>Location:</strong> Kenya
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <h3 style="margin-bottom: 1rem;">Send a Message</h3>
+          <form id="contactForm">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea rows="4" placeholder="Your Message" required></textarea>
+            <button type="submit" class="btn">Send Message</button>
+            <p id="formStatus" style="margin-top: 0.5rem; font-weight: 600;"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>&copy; 2026 Victor Munene Macharia. All rights reserved.</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. PERSISTENT LIGHT / DARK THEME TOGGLE
+      const themeToggle = document.getElementById('themeToggle');
+      const savedTheme = localStorage.getItem('portfolioTheme');
+
+      if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+        if (themeToggle) themeToggle.textContent = 'Dark Mode';
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          document.body.classList.toggle('light-mode');
+          const isLight = document.body.classList.contains('light-mode');
+          themeToggle.textContent = isLight ? 'Dark Mode' : 'Light Mode';
+          localStorage.setItem('portfolioTheme', isLight ? 'light' : 'dark');
+        });
+      }
+
+      // 2. SCROLL SPY & DYNAMIC SECTION COLOR PERSONALITY SWITCHER
+      const sections = document.querySelectorAll('.portfolio-section');
+      const navLinks = document.querySelectorAll('nav a');
+      const themeClasses = ['theme-home', 'theme-bio', 'theme-projects', 'theme-experience', 'theme-contact'];
+
+      const observerOptions = {
+        root: null,
+        rootMargin: '-35% 0px -55% 0px',
+        threshold: 0
+      };
+
+      const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            const newTheme = entry.target.getAttribute('data-theme');
+
+            // Update active navigation link
+            navLinks.forEach(link => {
+              link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+            });
+
+            // Switch page accent personality smoothly
+            if (newTheme) {
+              document.body.classList.remove(...themeClasses);
+              document.body.classList.add(newTheme);
+            }
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(section => sectionObserver.observe(section));
+
+      // 3. INTERACTIVE CURSOR GLOW
+      const cursorGlow = document.getElementById('cursor-glow');
+      if (cursorGlow) {
+        document.addEventListener('mousemove', (e) => {
+          cursorGlow.style.left = `${e.clientX}px`;
+          cursorGlow.style.top = `${e.clientY}px`;
+        });
+      }
+
+      // 4. CONTACT FORM HANDLER
+      const contactForm = document.getElementById('contactForm');
+      const formStatus = document.getElementById('formStatus');
+
+      if (contactForm && formStatus) {
+        contactForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const nameInput = contactForm.querySelector('input[type="text"]').value.trim();
+
+          formStatus.style.color = 'var(--accent)';
+          formStatus.textContent = `Thank you, ${nameInput || 'friend'}! Your message has been sent to Victor.`;
+          contactForm.reset();
+
+          setTimeout(() => {
+            formStatus.textContent = '';
+          }, 5000);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
